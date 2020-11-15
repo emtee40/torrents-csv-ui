@@ -15,7 +15,7 @@ export class Navbar extends Component<any, State> {
     },
   };
 
-  constructor(props, context) {
+  constructor(props: any, context: any) {
     super(props, context);
     this.fillSearchField();
   }
@@ -86,14 +86,14 @@ export class Navbar extends Component<any, State> {
     );
   }
 
-  search(i: Navbar, event) {
+  search(i: Navbar, event: any) {
     event.preventDefault();
     i.context.router.history.push(
       `/search/${i.state.searchParams.type_}/${i.state.searchParams.q}/${i.state.searchParams.page}`
     );
   }
 
-  searchChange(i: Navbar, event) {
+  searchChange(i: Navbar, event: any) {
     let searchParams: SearchParams = {
       q: event.target.value,
       page: 1,
@@ -102,7 +102,7 @@ export class Navbar extends Component<any, State> {
     i.setState({ searchParams: searchParams });
   }
 
-  searchTypeChange(i: Navbar, event) {
+  searchTypeChange(i: Navbar, event: any) {
     let searchParams: SearchParams = {
       q: i.state.searchParams.q,
       page: 1,
