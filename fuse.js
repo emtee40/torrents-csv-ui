@@ -4,7 +4,7 @@ const {
   EnvPlugin,
   CSSPlugin,
   WebIndexPlugin,
-  QuantumPlugin
+  QuantumPlugin,
 } = require('fuse-box');
 // const transformInferno = require('../../dist').default
 const transformInferno = require('ts-transform-inferno').default;
@@ -29,14 +29,14 @@ Sparky.task('config', _ => {
       WebIndexPlugin({
         title: 'Inferno Typescript FuseBox Example',
         template: 'src/index.html',
-        path: isProduction ? "/static" : "/"
+        path: isProduction ? '/static' : '/',
       }),
       isProduction &&
-      QuantumPlugin({
-        bakeApiIntoBundle: 'app',
-        treeshake: true,
-        uglify: true,
-      }),
+        QuantumPlugin({
+          bakeApiIntoBundle: 'app',
+          treeshake: true,
+          uglify: true,
+        }),
     ],
   });
   app = fuse.bundle('app').instructions('>index.tsx');

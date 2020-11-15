@@ -8,21 +8,20 @@ import { humanFileSize, magnetLink, getFileName } from '../utils';
 interface State {
   results: Results;
   searchParams: SearchParams;
-  searching: Boolean;
+  searching: boolean;
 }
 
 export class Search extends Component<any, State> {
-
   state: State = {
     results: {
-      torrents: []
+      torrents: [],
     },
     searchParams: {
-      q: "",
+      q: '',
       page: 1,
-      type_: 'torrent'
+      type_: 'torrent',
     },
-    searching: false
+    searching: false,
   };
 
   constructor(props: any, context: any) {
@@ -33,8 +32,8 @@ export class Search extends Component<any, State> {
     this.state.searchParams = {
       page: Number(this.props.match.params.page),
       q: this.props.match.params.q,
-      type_: this.props.match.params.type_
-    }
+      type_: this.props.match.params.type_,
+    };
     this.search();
   }
 
@@ -44,48 +43,51 @@ export class Search extends Component<any, State> {
       this.state.searchParams = {
         page: Number(this.props.match.params.page),
         q: this.props.match.params.q,
-        type_: this.props.match.params.type_
-      }
+        type_: this.props.match.params.type_,
+      };
       this.search();
     }
-
   }
 
   search() {
     if (!!this.state.searchParams.q) {
       this.setState({ searching: true, results: { torrents: [] } });
       this.fetchData(this.state.searchParams)
-      .then(torrents => {
-        if (!!torrents) {
-          this.setState({
-            results: {
-              torrents: torrents
-            }
-          });
-        }
-      }).catch(error => {
-        console.error('request failed', error);
-      }).then(() => this.setState({ searching: false }));
+        .then(torrents => {
+          if (!!torrents) {
+            this.setState({
+              results: {
+                torrents: torrents,
+              },
+            });
+          }
+        })
+        .catch(error => {
+          console.error('request failed', error);
+        })
+        .then(() => this.setState({ searching: false }));
     } else {
       this.setState({ results: { torrents: [] } });
     }
   }
 
-  fetchData(searchParams: SearchParams): Promise<Array<Torrent>> {
+  async fetchData(searchParams: SearchParams): Promise<Torrent[]> {
     let q = encodeURI(searchParams.q);
-    return fetch(`${endpoint}/service/search?q=${q}&page=${searchParams.page}&type_=${searchParams.type_}`)
-    .then(data => data.json());
+    return (
+      await fetch(
+        `${endpoint}/service/search?q=${q}&page=${searchParams.page}&type_=${searchParams.type_}`
+      )
+    ).json();
   }
 
   render() {
     return (
       <div>
-        {
-          this.state.searching ?
-            this.spinner() : this.state.results.torrents[0] ?
-            this.torrentsTable()
-              : this.noResults()
-        }
+        {this.state.searching
+          ? this.spinner()
+          : this.state.results.torrents[0]
+          ? this.torrentsTable()
+          : this.noResults()}
       </div>
     );
   }
@@ -93,7 +95,9 @@ export class Search extends Component<any, State> {
   spinner() {
     return (
       <div class="text-center m-5 p-5">
-        <svg class="icon icon-spinner spinner"><use xlinkHref="#icon-spinner"></use></svg>
+        <svg class="icon icon-spinner spinner">
+          <use xlinkHref="#icon-spinner"></use>
+        </svg>
       </div>
     );
   }
@@ -103,7 +107,7 @@ export class Search extends Component<any, State> {
       <div class="text-center m-5 p-5">
         <h1>No Results</h1>
       </div>
-    )
+    );
   }
 
   torrentsTable() {
@@ -123,55 +127,97 @@ export class Search extends Component<any, State> {
           <tbody>
             {this.state.results.torrents.map(torrent => (
               <tr>
-                { !torrent.name ? (
+                {!torrent.name ? (
                   <td className="path_column">
-                    <a class="text-body"
-                      href={magnetLink(torrent.infohash, torrent.path, torrent.index_)}>
+                    <a
+                      class="text-body"
+                      href={magnetLink(
+                        torrent.infohash,
+                        torrent.path,
+                        torrent.index_
+                      )}
+                    >
                       {getFileName(torrent.path)}
                     </a>
                   </td>
                 ) : (
                   <td class="search-name-cell">
-                    <a class="text-body"
-                      href={magnetLink(torrent.infohash, torrent.name, torrent.index_)}>
+                    <a
+                      class="text-body"
+                      href={magnetLink(
+                        torrent.infohash,
+                        torrent.name,
+                        torrent.index_
+                      )}
+                    >
                       {torrent.name}
                     </a>
                   </td>
                 )}
-                <td class="text-right text-muted">{humanFileSize(torrent.size_bytes, false)}</td>
+                <td class="text-right text-muted">
+                  {humanFileSize(torrent.size_bytes, false)}
+                </td>
                 <td class="text-right text-success">
-                  <svg class="icon icon-arrow-up d-none d-sm-inline mr-1"><use xlinkHref="#icon-arrow-up"></use></svg>
+                  <svg class="icon icon-arrow-up d-none d-sm-inline mr-1">
+                    <use xlinkHref="#icon-arrow-up"></use>
+                  </svg>
                   <span>{torrent.seeders}</span>
                 </td>
                 <td class="text-right text-danger d-none d-md-table-cell">
-                  <svg class="icon icon-arrow-down mr-1"><use xlinkHref="#icon-arrow-down"></use></svg>
+                  <svg class="icon icon-arrow-down mr-1">
+                    <use xlinkHref="#icon-arrow-down"></use>
+                  </svg>
                   <span>{torrent.leechers}</span>
                 </td>
-                <td class="text-right text-muted d-none d-md-table-cell"
-                  data-balloon={`Created ${moment(torrent.created_unix * 1000).fromNow()}`}
-                  data-balloon-pos="down">
+                <td
+                  class="text-right text-muted d-none d-md-table-cell"
+                  data-balloon={`Created ${moment(
+                    torrent.created_unix * 1000
+                  ).fromNow()}`}
+                  data-balloon-pos="down"
+                >
                   {moment(torrent.scraped_date * 1000).fromNow()}
                 </td>
                 <td class="text-right">
-                  <span class="btn btn-sm no-outline px-1"
+                  <span
+                    class="btn btn-sm no-outline px-1"
                     data-balloon="Copy Magnet link to clipboard"
                     data-balloon-pos="left"
-                    data-href={magnetLink(torrent.infohash, (torrent.name) ? torrent.name : torrent.path, torrent.index_)}
-                    onClick={this.copyLink}>
-                    <svg class="icon icon-copy"><use xlinkHref="#icon-copy"></use></svg>
+                    data-href={magnetLink(
+                      torrent.infohash,
+                      torrent.name ? torrent.name : torrent.path,
+                      torrent.index_
+                    )}
+                    onClick={this.copyLink}
+                  >
+                    <svg class="icon icon-copy">
+                      <use xlinkHref="#icon-copy"></use>
+                    </svg>
                   </span>
-                  <a class="btn btn-sm no-outline px-1"
-                    href={magnetLink(torrent.infohash, (torrent.name) ? torrent.name : torrent.path, torrent.index_)}
+                  <a
+                    class="btn btn-sm no-outline px-1"
+                    href={magnetLink(
+                      torrent.infohash,
+                      torrent.name ? torrent.name : torrent.path,
+                      torrent.index_
+                    )}
                     data-balloon="Magnet link"
-                    data-balloon-pos="left">
-                    <svg class="icon icon-magnet"><use xlinkHref="#icon-magnet"></use></svg>
+                    data-balloon-pos="left"
+                  >
+                    <svg class="icon icon-magnet">
+                      <use xlinkHref="#icon-magnet"></use>
+                    </svg>
                   </a>
-                  <a class="btn btn-sm no-outline px-1 d-none d-sm-inline"
+                  <a
+                    class="btn btn-sm no-outline px-1 d-none d-sm-inline"
                     href={`https://gitlab.com/dessalines/torrents.csv/issues/new?issue[title]=Report%20Torrent%20infohash%20${torrent.infohash}`}
                     target="_blank"
                     data-balloon="Report Torrent"
-                    data-balloon-pos="left">
-                    <svg class="icon icon-flag"><use xlinkHref="#icon-flag"></use></svg>
+                    data-balloon-pos="left"
+                  >
+                    <svg class="icon icon-flag">
+                      <use xlinkHref="#icon-flag"></use>
+                    </svg>
                   </a>
                 </td>
               </tr>
@@ -187,15 +233,25 @@ export class Search extends Component<any, State> {
     return (
       <nav>
         <ul class="pagination justify-content-center">
-          <li className={(this.state.searchParams.page == 1) ? "page-item disabled" : "page-item"}>
-            <button class="page-link"
-              onClick={linkEvent({ i: this, nextPage: false }, this.switchPage)}>
+          <li
+            className={
+              this.state.searchParams.page == 1
+                ? 'page-item disabled'
+                : 'page-item'
+            }
+          >
+            <button
+              class="page-link"
+              onClick={linkEvent({ i: this, nextPage: false }, this.switchPage)}
+            >
               Previous
             </button>
           </li>
           <li class="page-item">
-            <button class="page-link"
-              onClick={linkEvent({ i: this, nextPage: true }, this.switchPage)}>
+            <button
+              class="page-link"
+              onClick={linkEvent({ i: this, nextPage: true }, this.switchPage)}
+            >
               Next
             </button>
           </li>
@@ -204,19 +260,22 @@ export class Search extends Component<any, State> {
     );
   }
 
-  switchPage(a: { i: Search, nextPage: boolean }) {
+  switchPage(a: { i: Search; nextPage: boolean }) {
     let newSearch = a.i.state.searchParams;
-    newSearch.page += (a.nextPage) ? 1 : -1;
-    a.i.props.history.push(`/search/${newSearch.type_}/${newSearch.q}/${newSearch.page}`);
+    newSearch.page += a.nextPage ? 1 : -1;
+    a.i.props.history.push(
+      `/search/${newSearch.type_}/${newSearch.q}/${newSearch.page}`
+    );
   }
 
-  copyLink(evt) {
+  copyLink(evt: any) {
     const href = evt.currentTarget.dataset.href;
     try {
-      navigator.clipboard.writeText(href)
-        .then(() => alert("Copied magnet URL to clipboard"));
-    } catch(err) {
-      alert("Could not copy magnet URL: " + href)
+      navigator.clipboard
+        .writeText(href)
+        .then(() => alert('Copied magnet URL to clipboard'));
+    } catch  {
+      alert(`Could not copy magnet URL: ${href}`);
     }
   }
 }
