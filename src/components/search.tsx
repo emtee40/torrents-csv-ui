@@ -274,7 +274,7 @@ export class Search extends Component<any, State> {
       navigator.clipboard
         .writeText(href)
         .then(() => alert('Copied magnet URL to clipboard'));
-    } catch  {
+    } catch {
       alert(`Could not copy magnet URL: ${href}`);
     }
   }
