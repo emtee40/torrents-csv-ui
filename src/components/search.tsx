@@ -3,7 +3,7 @@ import moment from 'moment';
 
 import { endpoint } from '../env';
 import { SearchParams, Results, Torrent } from '../interfaces';
-import { humanFileSize, magnetLink, getFileName } from '../utils';
+import { humanFileSize, magnetLink, getFileName, repoUrl } from '../utils';
 
 interface State {
   results: Results;
@@ -210,7 +210,7 @@ export class Search extends Component<any, State> {
                   </a>
                   <a
                     class="btn btn-sm no-outline px-1 d-none d-sm-inline"
-                    href={`https://gitlab.com/dessalines/torrents.csv/issues/new?issue[title]=Report%20Torrent%20infohash%20${torrent.infohash}`}
+                    href={`${repoUrl}/issues/new?issue[title]=Report%20Torrent%20infohash%20${torrent.infohash}`}
                     target="_blank"
                     data-balloon="Report Torrent"
                     data-balloon-pos="left"

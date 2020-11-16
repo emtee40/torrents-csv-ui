@@ -1,3 +1,5 @@
+export let repoUrl = 'https://codeberg.org/heretic/torrents-csv-server';
+
 export function magnetLink(
   infohash: string,
   name: string,
@@ -66,5 +68,3 @@ export function humanFileSize(bytes: number, si: boolean): string {
   } while (Math.abs(bytes) >= thresh && u < units.length - 1);
   return `${bytes.toFixed(1)} ${units[u]}`;
 }
-
-export let repoUrl = 'https://gitlab.com/dessalines/torrents.csv';
