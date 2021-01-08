@@ -22,6 +22,12 @@ export class Home extends Component<any, any> {
         non-seeded torrents, and sorted by seeders descending.
         <br />
         <br />
+        API:{' '}
+        <code>
+          http://torrents-csv.ml/service/search?q=[QUERY]&size=[NUMBER_OF_RESULTS]&page=[PAGE]`
+        </code>
+        <br />
+        <br />
         To request more torrents, or add your own, go <a href={repoUrl}>here</a>
         .<br />
         <br />
