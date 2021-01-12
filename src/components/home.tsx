@@ -24,7 +24,7 @@ export class Home extends Component<any, any> {
         <br />
         API:{' '}
         <code>
-          http://torrents-csv.ml/service/search?q=[QUERY]&size=[NUMBER_OF_RESULTS]&page=[PAGE]`
+          http://torrents-csv.ml/service/search?q=[QUERY]&size=[NUMBER_OF_RESULTS]&page=[PAGE]
         </code>
         <br />
         <br />
