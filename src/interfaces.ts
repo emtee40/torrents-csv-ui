@@ -6,7 +6,7 @@ export interface SearchParams {
 }
 
 export interface Results {
-  torrents: Array<Torrent>;
+  torrents: Torrent[];
 }
 
 export interface Torrent {

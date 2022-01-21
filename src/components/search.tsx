@@ -120,7 +120,7 @@ export class Search extends Component<any, State> {
               <th class="text-right">Size</th>
               <th class="text-right">Seeds</th>
               <th class="text-right d-none d-md-table-cell">Leeches</th>
-              <th class="text-right d-none d-md-table-cell">Scraped</th>
+              <th class="text-right d-none d-md-table-cell">Created</th>
               <th></th>
             </tr>
           </thead>
@@ -171,12 +171,12 @@ export class Search extends Component<any, State> {
                 </td>
                 <td
                   class="text-right text-muted d-none d-md-table-cell"
-                  data-balloon={`Created ${moment(
-                    torrent.created_unix * 1000
+                  data-balloon={`Scraped ${moment(
+                    torrent.scraped_date * 1000
                   ).fromNow()}`}
                   data-balloon-pos="down"
                 >
-                  {moment(torrent.scraped_date * 1000).fromNow()}
+                  {moment(torrent.created_unix * 1000).fromNow()}
                 </td>
                 <td class="text-right">
                   <span

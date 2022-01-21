@@ -13,6 +13,7 @@ class Index extends Component<any, any> {
   render() {
     return (
       <HashRouter>
+        <>
         <Navbar />
         <div class="mt-3 p-0">
           <Switch>
@@ -21,6 +22,7 @@ class Index extends Component<any, any> {
           </Switch>
           {this.symbols()}
         </div>
+        </>
       </HashRouter>
     );
   }
