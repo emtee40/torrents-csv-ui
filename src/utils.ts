@@ -1,4 +1,4 @@
-export let repoUrl = 'https://codeberg.org/heretic/torrents-csv-server';
+export let repoUrl = 'https://gitea.com/heretic/torrents-csv-server';
 
 export function magnetLink(
   infohash: string,
