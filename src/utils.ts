@@ -1,4 +1,5 @@
 export let repoUrl = 'https://gitea.com/heretic/torrents-csv-server';
+export let androidAppRepoUrl = 'https://gitea.com/heretic/torrents-csv-android';
 
 export function magnetLink(
   infohash: string,

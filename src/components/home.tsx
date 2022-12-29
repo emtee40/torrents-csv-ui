@@ -1,5 +1,5 @@
 import { Component } from 'inferno';
-import { repoUrl } from '../utils';
+import { androidAppRepoUrl, repoUrl } from '../utils';
 
 export class Home extends Component<any, any> {
   render() {
@@ -20,6 +20,9 @@ export class Home extends Component<any, any> {
         <a href={repoUrl}>Torrents.csv</a> will only store torrents with at
         least one seeder to keep the file small, will be periodically purged of
         non-seeded torrents, and sorted by seeders descending.
+        <br />
+        <br />
+        <a href={androidAppRepoUrl}>Torrents-csv-android app</a>
         <br />
         <br />
         API:{' '}
