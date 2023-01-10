@@ -2,7 +2,6 @@ export interface SearchParams {
   q: string;
   page: number;
   size?: number;
-  type_: string;
 }
 
 export interface Results {

@@ -11,7 +11,6 @@ export class Navbar extends Component<any, State> {
     searchParams: {
       page: 1,
       q: '',
-      type_: 'torrent',
     },
   };
 
@@ -63,15 +62,6 @@ export class Navbar extends Component<any, State> {
             onInput={linkEvent(this, this.searchChange)}
           ></input>
           <div class="input-group-append">
-            <select
-              value={this.state.searchParams.type_}
-              onInput={linkEvent(this, this.searchTypeChange)}
-              class="custom-select border-top-0 border-bottom-0 rounded-0"
-            >
-              <option disabled>Type</option>
-              <option value="torrent">Torrent</option>
-              <option value="file">File</option>
-            </select>
             <button
               class="btn btn-secondary border-0 rounded-right no-outline"
               type="submit"
@@ -89,7 +79,7 @@ export class Navbar extends Component<any, State> {
   search(i: Navbar, event: any) {
     event.preventDefault();
     i.context.router.history.push(
-      `/search/${i.state.searchParams.type_}/${i.state.searchParams.q}/${i.state.searchParams.page}`
+      `/search/torrent/${i.state.searchParams.q}/${i.state.searchParams.page}`
     );
   }
 
@@ -97,19 +87,10 @@ export class Navbar extends Component<any, State> {
     let searchParams: SearchParams = {
       q: event.target.value,
       page: 1,
-      type_: i.state.searchParams.type_,
     };
     i.setState({ searchParams: searchParams });
   }
 
-  searchTypeChange(i: Navbar, event: any) {
-    let searchParams: SearchParams = {
-      q: i.state.searchParams.q,
-      page: 1,
-      type_: event.target.value,
-    };
-    i.setState({ searchParams: searchParams });
-  }
   fillSearchField() {
     let splitPath: string[] = this.context.router.route.location.pathname.split(
       '/'
@@ -118,7 +99,6 @@ export class Navbar extends Component<any, State> {
       this.state.searchParams = {
         page: Number(splitPath[4]),
         q: splitPath[3],
-        type_: splitPath[2],
       };
   }
 }

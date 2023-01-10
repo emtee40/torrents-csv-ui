@@ -19,7 +19,6 @@ export class Search extends Component<any, State> {
     searchParams: {
       q: '',
       page: 1,
-      type_: 'torrent',
     },
     searching: false,
   };
@@ -32,7 +31,6 @@ export class Search extends Component<any, State> {
     this.state.searchParams = {
       page: Number(this.props.match.params.page),
       q: this.props.match.params.q,
-      type_: this.props.match.params.type_,
     };
     this.search();
   }
@@ -43,7 +41,6 @@ export class Search extends Component<any, State> {
       this.state.searchParams = {
         page: Number(this.props.match.params.page),
         q: this.props.match.params.q,
-        type_: this.props.match.params.type_,
       };
       this.search();
     }
@@ -74,9 +71,7 @@ export class Search extends Component<any, State> {
   async fetchData(searchParams: SearchParams): Promise<Torrent[]> {
     let q = encodeURI(searchParams.q);
     return (
-      await fetch(
-        `${endpoint}/service/search?q=${q}&page=${searchParams.page}&type_=${searchParams.type_}`
-      )
+      await fetch(`${endpoint}/service/search?q=${q}&page=${searchParams.page}`)
     ).json();
   }
 
@@ -263,9 +258,7 @@ export class Search extends Component<any, State> {
   switchPage(a: { i: Search; nextPage: boolean }) {
     let newSearch = a.i.state.searchParams;
     newSearch.page += a.nextPage ? 1 : -1;
-    a.i.props.history.push(
-      `/search/${newSearch.type_}/${newSearch.q}/${newSearch.page}`
-    );
+    a.i.props.history.push(`/search/torrent/${newSearch.q}/${newSearch.page}`);
   }
 
   copyLink(evt: any) {
